@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>About | Matthew Wang</title>
+  <meta name="description" content="Matthew Wang outside of work: NYU swimming, marathon running, Miyazaki films, coffee and tea, and China–US policy.">
+  <link rel="canonical" href="https://mattzwang.com/about.html">
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Matthew Wang">
+  <meta property="og:title" content="About | Matthew Wang">
+  <meta property="og:description" content="Matthew Wang outside of work: NYU swimming, marathon running, Miyazaki films, coffee and tea, and China–US policy.">
+  <meta property="og:url" content="https://mattzwang.com/about.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Helvetica Neue,Arial,sans-serif' font-size='26' font-weight='700' letter-spacing='-1.5' fill='%23fff'%3EMW%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/theme.js"></script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="assets/js/water.js" defer></script>
+  <script src="assets/js/motion.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="band"><canvas class="water" data-water aria-hidden="true"></canvas></div>
+
+  <nav class="wrap topbar" aria-label="Site">
+    <a class="home-link" href="index.html">Matthew Wang</a>
+    <ul>
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="about.html" aria-current="page">About</a></li>
+      <li><a href="resume.html">Resume</a></li>
+    </ul>
+  </nav>
+
+  <main id="main" class="wrap">
+    <header class="page-head">
+      <p class="kicker"><span>About</span></p>
+      <h1 style="view-transition-name: vt-about-title">Outside</h1>
+      <p class="lede" data-enter>What I do when I’m not working. The work itself is on the <a href="index.html#work">home page</a>.</p>
+    </header>
+
+    <section class="case-section" aria-labelledby="water" data-reveal>
+      <h2 id="water">In the water</h2>
+      <div class="prose">
+        <p>I swam for NYU Men’s Swimming &amp; Diving (NCAA Division III) from 2023 to 2025. I swam the butterfly leg of our conference-winning 400 Medley Relay, which set a program record and earned First Team honors.</p>
+        <p>I was also in the team’s leadership group, where I organized team-building and mental health programs and brought in speakers for the wider athletics department.</p>
+        <p>That’s why this site is full of water.</p>
+      </div>
+    </section>
+
+    <section class="case-section" aria-labelledby="land" data-reveal>
+      <h2 id="land">On land</h2>
+      <div class="prose">
+        <p>I run marathons and follow fitness tech. I like Miyazaki films, coffee and tea, and finding new places to eat.</p>
+        <p>I also follow China–US policy and macroeconomics.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <div class="site-footer">
+      <p class="foot-links">
+        <a href="mailto:matthew.wang@stern.nyu.edu">matthew.wang@stern.nyu.edu</a>
+        <a href="https://www.linkedin.com/in/mzwang7405" rel="me noopener">LinkedIn</a>
+      </p>
+      <p>Built with Claude Code. <a href="https://github.com/mzwang74/mzwang74.github.io">View the source on GitHub</a></p>
+      <div class="foot-controls">
+        <button class="pill theme-toggle" type="button" data-water-toggle aria-pressed="false" hidden>Pause water</button>
+        <button class="pill theme-toggle" type="button" data-theme-toggle hidden>Dark mode</button>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

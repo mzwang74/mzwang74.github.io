@@ -1,0 +1,939 @@
+/* mattzwang.com
+   Black and white, one accent (NYU violet). Tokens first, then layout.
+   The water (assets/js/water.js) reads --water-dot and --accent from here. */
+
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --ink: #000000;
+  --muted: #5c5c5c;
+  --line: #e4e4e4;
+  --dot-line: #b3b3b3;
+  --accent: #57068c;
+  --accent-tint: #f1e6f8;
+  --on-ink: #ffffff;
+  --water-dot: #bcbcbc;
+  --fish-white: #d6d6d6;
+
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+
+  --measure: 42rem;
+  --wide: 60rem;
+  --gutter: 1.25rem;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Dark is the default for everyone; light only when the visitor picks it. */
+:root:not([data-theme="light"]) {
+  color-scheme: dark;
+  --bg: #000000;
+  --ink: #ffffff;
+  --muted: #a6a6a6;
+  --line: #2a2a2a;
+  --dot-line: #4d4d4d;
+  --accent: #c9a0ff;
+  --accent-tint: #2a1640;
+  --on-ink: #000000;
+  --water-dot: #474747;
+  --fish-white: #f2f2f2;
+}
+
+/* Base */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 2rem;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: var(--muted);
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+a:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+canvas {
+  display: block;
+}
+
+/* Placeholder content Matt still has to fill in. Search for data-todo. */
+mark[data-todo] {
+  background: var(--accent-tint);
+  color: inherit;
+  padding: 0.05em 0.3em;
+  border-radius: 0.3em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: -4rem;
+  z-index: 10;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--on-ink);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0.75rem;
+  color: var(--on-ink);
+}
+
+/* Layout: one wide column for nav, rows and headers; text keeps a reading measure. */
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--wide) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
+}
+
+.section-title {
+  font-size: clamp(2rem, 7vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose > * + * {
+  margin-top: 1.1em;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Top bar */
+
+.topbar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  font-size: 0.9375rem;
+}
+
+.topbar a {
+  display: inline-block;
+  padding-block: 0.5rem;
+  text-decoration: none;
+}
+
+.topbar .home-link {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  letter-spacing: -0.02em;
+}
+
+.topbar ul {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.topbar [aria-current="page"] {
+  color: var(--muted);
+}
+
+/* Shared bits */
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.lede {
+  max-width: 36rem;
+  font-size: clamp(1.25rem, 4.6vw, 1.625rem);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+}
+
+.meta {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 2rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.pill:hover {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.pill-solid {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+.pill-solid:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+/* Water layers. The canvas never takes pointer events: water.js listens on window. */
+
+.water {
+  pointer-events: none;
+}
+
+/* Home: the water fills the viewport and stays put behind everything. */
+.home .water {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
+}
+
+/* Inner pages: a faint band of water behind the header that fades out downwards. */
+.band {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  height: min(32rem, 80vh);
+  overflow: hidden;
+  opacity: 0.75;
+  pointer-events: none;
+  touch-action: pan-y pinch-zoom;
+  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent);
+  mask-image: linear-gradient(to bottom, #000 35%, transparent);
+}
+
+.band .water {
+  width: 100%;
+  height: 100%;
+}
+
+.band ~ main,
+.band ~ footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Home intro: a tall section with a sticky full-screen stage. Work slides over it. */
+
+.home .topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.dive {
+  position: relative;
+  z-index: 1;
+  height: 220vh;
+  height: 220svh;
+  touch-action: pan-y pinch-zoom;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  height: 100svh;
+  padding-block: 5rem 4.5rem;
+}
+
+.intro h1 {
+  margin-top: 0.5rem;
+  font-size: clamp(1.5rem, 5vw, 1.875rem);
+  letter-spacing: -0.03em;
+}
+
+.intro .lede {
+  margin-top: 1.5rem;
+  max-width: 21em;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 5.6vw, 2.875rem);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.cue-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+}
+
+.dive-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  text-decoration: none;
+}
+
+.dive-cue::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Very short screens (a phone on its side): no sticky stage, just a normal page. */
+@media (max-height: 30rem) {
+  .dive,
+  .stage {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .stage {
+    position: relative;
+  }
+
+  .home .panel {
+    margin-top: 0;
+  }
+}
+
+/* Work panel: solid, so the water only shows in the side margins on wide screens. */
+
+.panel,
+.panel-foot {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: calc(var(--wide) + 8rem);
+  margin-inline: auto;
+  background: var(--bg);
+}
+
+/* Where supported, the Work panel is frosted glass: the water keeps moving
+   behind it, softly blurred, instead of a blank backdrop. */
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .panel,
+  .panel-foot {
+    background: color-mix(in srgb, var(--bg) 47%, transparent);
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
+  }
+}
+
+.panel {
+  margin-top: -100vh;
+  margin-top: -100svh;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: clamp(3rem, 9vw, 5rem);
+  border-radius: 1.75rem 1.75rem 0 0;
+  scroll-margin-top: -2rem;
+}
+
+.panel-foot .site-footer {
+  margin-top: 0;
+}
+
+.panel-foot {
+  padding-top: clamp(4rem, 12vw, 7rem);
+}
+
+.list-title {
+  margin-top: clamp(2.5rem, 7vw, 3.5rem);
+  padding-bottom: 0.9rem;
+  color: var(--muted);
+  font-family: var(--body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+/* Numbered rows */
+
+.rows {
+  border-bottom: 2px dotted var(--dot-line);
+}
+
+.row {
+  border-top: 2px dotted var(--dot-line);
+}
+
+.row-link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.3rem;
+  padding-block: 1.4rem;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: transform 0.4s var(--ease);
+}
+
+.row-link:hover {
+  color: inherit;
+}
+
+.row-num {
+  width: fit-content;
+  color: var(--muted);
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s ease;
+}
+
+.row-main {
+  min-width: 0;
+}
+
+.row-title {
+  display: block;
+  width: fit-content;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.375rem, 5vw, 1.875rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.row-desc {
+  display: block;
+  max-width: 40rem;
+  margin-top: 0.4rem;
+  color: var(--muted);
+}
+
+.row-meta {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.row-link:focus-visible .row-num,
+.row-link:active .row-num {
+  color: var(--accent);
+}
+
+@media (hover: hover) {
+  .row-link:hover {
+    transform: translateX(0.6rem);
+  }
+
+  .row-link:hover .row-num {
+    color: var(--accent);
+  }
+}
+
+@media (min-width: 46rem) {
+  .row-link {
+    grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+    column-gap: 1.25rem;
+    align-items: baseline;
+    padding-block: 1.75rem;
+  }
+
+  .row-meta {
+    text-align: right;
+  }
+}
+
+/* Home Work list: big Experience / Projects headers, and rows with the
+   dates and location top right, then the role and a short summary. */
+
+.work-heading {
+  margin-top: clamp(3.5rem, 9vw, 5.5rem);
+  padding-bottom: clamp(1rem, 3vw, 1.5rem);
+  font-size: clamp(2.25rem, 8vw, 3.75rem);
+  line-height: 1;
+}
+
+.work-heading:first-child {
+  margin-top: 0;
+}
+
+.row-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: 1.5rem;
+  row-gap: 0.25rem;
+}
+
+.row-when {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.row-role {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.work-row .row-desc {
+  max-width: 44rem;
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+@media (min-width: 46rem) {
+  .work-row {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+  }
+}
+
+/* Inner pages */
+
+.page-head {
+  padding-top: clamp(3rem, 10vw, 5.5rem);
+}
+
+.page-head h1 {
+  width: fit-content;
+  margin-top: 0.75rem;
+  font-size: clamp(2.5rem, 10vw, 4.5rem);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.page-head .meta {
+  margin-top: 1rem;
+}
+
+.page-head .lede {
+  margin-top: 1.25rem;
+}
+
+.kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.kicker-num {
+  color: var(--accent);
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Result numbers */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 0 2rem;
+  margin-top: clamp(2.5rem, 7vw, 3.5rem);
+  border-bottom: 2px dotted var(--dot-line);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  padding-block: 1.25rem 1.4rem;
+  border-top: 2px dotted var(--dot-line);
+}
+
+.stat dd {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 9vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.stat dd .to {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.stat dt {
+  max-width: 16rem;
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.case-section {
+  padding-top: clamp(2.5rem, 7vw, 3.5rem);
+}
+
+.case-section h2,
+.resume-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.build {
+  margin-top: clamp(3rem, 9vw, 4.5rem);
+  padding-top: 0.25rem;
+  border-top: 2px dotted var(--dot-line);
+}
+
+.build > .case-section:first-child h2 {
+  font-size: clamp(1.75rem, 6vw, 2.25rem);
+}
+
+.case-section h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1875rem;
+  letter-spacing: -0.02em;
+}
+
+.case-section .prose + h3 {
+  margin-top: 1.75rem;
+}
+
+.next {
+  margin-top: clamp(3.5rem, 10vw, 5.5rem);
+}
+
+.next .row-meta {
+  color: var(--ink);
+}
+
+/* Resume and 404 keep the reading measure. */
+
+.narrow {
+  max-width: var(--measure);
+}
+
+.resume-section {
+  padding-top: 3rem;
+}
+
+.resume-section h2 {
+  padding-bottom: 0.75rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.role {
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.role-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.15rem 1.5rem;
+}
+
+.role-head > * {
+  min-width: 0;
+}
+
+.role h3 {
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.role-date {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.role-org {
+  color: var(--muted);
+}
+
+.bullets {
+  margin-top: 0.6rem;
+  padding-left: 1.1rem;
+  list-style: disc;
+}
+
+.role > .bullets:first-child {
+  margin-top: 0;
+}
+
+.bullets li + li {
+  margin-top: 0.35rem;
+}
+
+.bullets li::marker {
+  color: var(--muted);
+}
+
+/* Footer */
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: clamp(4rem, 12vw, 7rem);
+  padding-block: 1.5rem max(2.5rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.site-footer a:hover {
+  color: var(--ink);
+}
+
+.foot-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  width: 100%;
+  color: var(--ink);
+  font-size: 1.0625rem;
+}
+
+.foot-links a {
+  display: inline-block;
+  padding-block: 0.5rem;
+}
+
+.foot-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.theme-toggle {
+  min-height: 2.75rem;
+  padding: 0.4rem 1rem;
+  border-color: var(--line);
+  color: var(--ink);
+  font-size: 0.875rem;
+}
+
+.theme-toggle:hover {
+  border-color: var(--ink);
+}
+
+/* Motion.
+   theme.js adds .js to <html>; motion.js (GSAP) then brings these elements in.
+   If GSAP never loads, theme.js removes .js again so nothing stays hidden. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-enter],
+  .js [data-reveal] {
+    opacity: 0;
+  }
+
+  /* Row and header morph between pages. Browsers without cross-document
+     view transitions just load the page. */
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+.row-num,
+.row-title,
+.kicker-num,
+.page-head h1,
+.topbar a {
+  view-transition-class: morph;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Keep text from stretching while it changes size. */
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left top;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  .row-link:hover {
+    transform: none;
+  }
+}
+
+/* Print: the resume page should print cleanly. */
+
+@media print {
+  .topbar,
+  .site-footer,
+  .panel-foot,
+  .actions,
+  .skip-link,
+  .band,
+  .water,
+  .next,
+  .cue-wrap {
+    display: none;
+  }
+
+  body {
+    font-size: 11pt;
+  }
+
+  .page-head,
+  .resume-section {
+    padding-top: 1.25rem;
+  }
+
+  .role {
+    break-inside: avoid;
+  }
+
+  .dive,
+  .stage {
+    position: static;
+    height: auto;
+  }
+
+  .panel {
+    margin-top: 0;
+    min-height: 0;
+  }
+
+  [data-enter],
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

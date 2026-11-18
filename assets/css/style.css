@@ -2,14 +2,6 @@
    Warm off-white (light) or black (dark), one accent (NYU violet). Tokens first, then layout.
    The water (assets/js/water.js) reads --water-dot and --accent from here. */
 
-/* Syne draws "~" as a small raised dot, which turns "~95%" into "·95%".
-   This face covers only that one character with the system sans. */
-@font-face {
-  font-family: "Tilde";
-  src: local("Helvetica Neue"), local("Helvetica"), local("Arial");
-  unicode-range: U+007E;
-}
-
 :root {
   color-scheme: light;
   --bg: #f6f3ec;
@@ -23,7 +15,7 @@
   --water-dot: #c3bcae;
   --fish-white: #bdb4a3;
 
-  --display: "Tilde", "Syne", "Helvetica Neue", Arial, sans-serif;
+  --display: "Libre Caslon Text", Georgia, "Times New Roman", serif;
   --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
 
   --measure: 42rem;
@@ -97,7 +89,7 @@ h2,
 h3 {
   font-family: var(--display);
   font-variant-numeric: lining-nums;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.05;
   letter-spacing: -0.01em;
   text-wrap: balance;
@@ -174,8 +166,8 @@ mark[data-todo] {
 }
 
 .section-title {
-  font-size: clamp(2rem, 7vw, 3rem);
-  font-weight: 500;
+  font-size: clamp(1.88rem, 6.58vw, 2.82rem);
+  font-weight: 400;
   letter-spacing: -0.015em;
 }
 
@@ -213,7 +205,7 @@ mark[data-todo] {
 .topbar .home-link {
   font-family: var(--display);
   font-variant-numeric: lining-nums;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 1.0625rem;
   letter-spacing: -0.01em;
 }
@@ -362,7 +354,7 @@ mark[data-todo] {
 
 .intro h1 {
   margin-top: 0.5rem;
-  font-size: clamp(1.5rem, 5vw, 1.875rem);
+  font-size: clamp(2rem, 7vw, 2.75rem);
   letter-spacing: -0.01em;
 }
 
@@ -371,9 +363,9 @@ mark[data-todo] {
   max-width: 21em;
   font-family: var(--display);
   font-variant-numeric: lining-nums;
-  font-weight: 500;
-  font-size: clamp(1.75rem, 5.6vw, 2.875rem);
-  line-height: 1.06;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 4.4vw, 2.125rem);
+  line-height: 1.18;
   letter-spacing: -0.015em;
   text-wrap: balance;
 }
@@ -490,7 +482,6 @@ mark[data-todo] {
   padding-block: 1.4rem;
   text-decoration: none;
   touch-action: manipulation;
-  transition: transform 0.4s var(--ease);
 }
 
 .row-link:hover {
@@ -501,10 +492,9 @@ mark[data-todo] {
   width: fit-content;
   color: var(--muted);
   font-family: var(--display);
-  font-weight: 500;
+  font-weight: 400;
   font-size: 1rem;
   font-variant-numeric: lining-nums tabular-nums;
-  transition: color 0.2s ease;
 }
 
 .row-main {
@@ -516,8 +506,8 @@ mark[data-todo] {
   width: fit-content;
   font-family: var(--display);
   font-variant-numeric: lining-nums;
-  font-weight: 500;
-  font-size: clamp(1.375rem, 5vw, 1.875rem);
+  font-weight: 400;
+  font-size: clamp(1.292rem, 4.7vw, 1.762rem);
   line-height: 1.1;
   letter-spacing: -0.01em;
 }
@@ -535,17 +525,19 @@ mark[data-todo] {
   font-variant-numeric: tabular-nums;
 }
 
-.row-link:focus-visible .row-num,
-.row-link:active .row-num {
+/* Hover, keyboard focus or tap: the whole row turns violet, number to
+   description. Nothing moves. */
+.row-link :is(.row-num, .row-title, .row-when, .row-role, .row-desc) {
+  transition: color 0.2s ease;
+}
+
+.row-link:focus-visible :is(.row-num, .row-title, .row-when, .row-role, .row-desc),
+.row-link:active :is(.row-num, .row-title, .row-when, .row-role, .row-desc) {
   color: var(--accent);
 }
 
 @media (hover: hover) {
-  .row-link:hover {
-    transform: translateX(0.6rem);
-  }
-
-  .row-link:hover .row-num {
+  .row-link:hover :is(.row-num, .row-title, .row-when, .row-role, .row-desc) {
     color: var(--accent);
   }
 }
@@ -569,7 +561,7 @@ mark[data-todo] {
 .work-heading {
   margin-top: clamp(3.5rem, 9vw, 5.5rem);
   padding-bottom: clamp(1rem, 3vw, 1.5rem);
-  font-size: clamp(2.025rem, 7.2vw, 3.375rem);
+  font-size: clamp(1.903rem, 6.768vw, 3.172rem);
   line-height: 1;
 }
 
@@ -623,8 +615,8 @@ mark[data-todo] {
 .page-head h1 {
   width: fit-content;
   margin-top: 0.75rem;
-  font-size: clamp(2.5rem, 10vw, 4.5rem);
-  font-weight: 500;
+  font-size: clamp(2.35rem, 9.4vw, 4.23rem);
+  font-weight: 400;
   line-height: 0.98;
   letter-spacing: -0.015em;
 }
@@ -648,7 +640,7 @@ mark[data-todo] {
 .kicker-num {
   color: var(--accent);
   font-family: var(--display);
-  font-weight: 500;
+  font-weight: 400;
   font-size: 1rem;
   font-variant-numeric: lining-nums tabular-nums;
 }
@@ -673,8 +665,8 @@ mark[data-todo] {
 
 .stat dd {
   font-family: var(--display);
-  font-weight: 500;
-  font-size: clamp(2.5rem, 9vw, 3.5rem);
+  font-weight: 400;
+  font-size: clamp(2.35rem, 8.46vw, 3.29rem);
   line-height: 1;
   letter-spacing: -0.015em;
   font-variant-numeric: lining-nums tabular-nums;
@@ -683,7 +675,7 @@ mark[data-todo] {
 
 .stat dd .to {
   color: var(--muted);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .stat dt {
@@ -700,7 +692,7 @@ mark[data-todo] {
 
 .case-section h2,
 .resume-section h2 {
-  font-size: 1.5rem;
+  font-size: 1.41rem;
   margin-bottom: 0.75rem;
 }
 
@@ -711,12 +703,12 @@ mark[data-todo] {
 }
 
 .build > .case-section:first-child h2 {
-  font-size: clamp(1.75rem, 6vw, 2.25rem);
+  font-size: clamp(1.645rem, 5.64vw, 2.115rem);
 }
 
 .case-section h3 {
   margin-bottom: 0.5rem;
-  font-size: 1.1875rem;
+  font-size: 1.116rem;
   letter-spacing: -0.01em;
 }
 
@@ -897,10 +889,6 @@ mark[data-todo] {
   *::after {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
-  }
-
-  .row-link:hover {
-    transform: none;
   }
 }
 

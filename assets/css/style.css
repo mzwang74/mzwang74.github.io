@@ -702,6 +702,12 @@ mark[data-todo] {
   border-top: 2px dotted var(--dot-line);
 }
 
+/* A build straight after the stats shares the stats' bottom line. */
+.stats + .build {
+  margin-top: 0;
+  border-top: 0;
+}
+
 .build > .case-section:first-child h2 {
   font-size: clamp(1.645rem, 5.64vw, 2.115rem);
 }

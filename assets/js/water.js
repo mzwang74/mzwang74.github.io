@@ -148,7 +148,6 @@
       size: size,
       /* Head-to-tail length, used to tell when the whole fish is off screen. */
       length: size * 0.9 * (SEGMENTS - 1) + size,
-      returning: false,
       white: white,
       scatter: 0,
       blotches: makeBlotches(),
@@ -243,6 +242,42 @@
       ox[i] += vx[i] * dt;
       oy[i] += vy[i] * dt;
       bucket[i] = height > 0.35 ? 2 : height > -0.3 ? 1 : 0;
+    }
+  }
+
+  /* Re-entry. A fish that has left the screen comes back at a random point
+     on one of the four edges. Each edge keeps a running count, and the next
+     fish always uses one of the least-used edges, so the counts never differ
+     by more than one. Fish that leave together therefore come back on
+     different sides instead of as the same group. */
+  var edgeUses = [0, 0, 0, 0]; /* top, right, bottom, left */
+
+  function pickEdge() {
+    var least = Math.min.apply(null, edgeUses);
+    var open = [];
+    for (var e = 0; e < 4; e++) if (edgeUses[e] === least) open.push(e);
+    var edge = open[Math.floor(Math.random() * open.length)];
+    edgeUses[edge]++;
+    return edge;
+  }
+
+  function reenter(f) {
+    var edge = pickEdge();
+    var along = 0.1 + Math.random() * 0.8;
+    var inward = [Math.PI / 2, Math.PI, -Math.PI / 2, 0][edge];
+    var angle = inward + (Math.random() - 0.5) * 1.2;
+    var pad = 10;
+    f.x = edge === 1 ? w + pad : edge === 3 ? -pad : along * w;
+    f.y = edge === 0 ? -pad : edge === 2 ? h + pad : along * h;
+    f.vx = Math.cos(angle) * 44;
+    f.vy = Math.sin(angle) * 44;
+    f.heading = angle;
+    f.scatter = 0;
+    f.panic = 0;
+    /* Lay the body out behind the head, off screen, so it swims in whole. */
+    for (var s = 0; s < SEGMENTS; s++) {
+      f.sx[s] = f.x - Math.cos(angle) * s * f.size * 0.9;
+      f.sy[s] = f.y - Math.sin(angle) * s * f.size * 0.9;
     }
   }
 
@@ -367,18 +402,11 @@
       }
 
       /* Fish may swim fully out of view. Once the whole body is past an edge,
-         they turn around and head back in, and keep turning until they're
-         well inside again. */
+         the fish comes back in somewhere else (see reenter). */
       var out = f.length + 20;
-      if (f.x < -out || f.x > w + out || f.y < -out || f.y > h + out) f.returning = true;
-      if (f.returning) {
-        var tx = clamp(f.x, w * 0.2, w * 0.8) - f.x;
-        var ty = clamp(f.y, h * 0.2, h * 0.8) - f.y;
-        var tl = Math.sqrt(tx * tx + ty * ty) || 0.001;
-        ax += (tx / tl) * 160;
-        ay += (ty / tl) * 160;
-        f.heading = Math.atan2(ty, tx);
-        if (f.x > 40 && f.x < w - 40 && f.y > 40 && f.y < h - 40) f.returning = false;
+      if (f.x < -out || f.x > w + out || f.y < -out || f.y > h + out) {
+        reenter(f);
+        continue;
       }
 
       f.vx += ax * dt;
@@ -593,6 +621,17 @@
     ctx.globalAlpha = 1;
   }
 
+  /* Reduced motion or the visitor's pause: still dots, no fish. */
+  function wantsStill() {
+    return reduce.matches || userPaused;
+  }
+
+  /* Redraw while the loop is stopped, without leaving fish frozen mid-swim. */
+  function redrawStopped() {
+    if (wantsStill()) drawStill();
+    else draw(true);
+  }
+
   /* Reduced motion: one still frame of dots, no fish. */
   function drawStill() {
     for (var i = 0; i < count; i++) {
@@ -641,7 +680,7 @@
         cancelAnimationFrame(raf);
         raf = 0;
       }
-      if (reduce.matches) drawStill();
+      if (wantsStill()) drawStill();
     }
   }
 
@@ -741,7 +780,8 @@
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () {
       var rect = canvas.getBoundingClientRect();
-      if (Math.abs(rect.width - w) < 1 && Math.abs(rect.height - h) < 1) return;
+      var sameSize = Math.abs(rect.width - w) < 1 && Math.abs(rect.height - h) < 1;
+      if (sameSize && Math.min(window.devicePixelRatio || 1, 2) === dpr) return;
       build();
       if (!raf) drawStill();
       queueCover();
@@ -750,13 +790,22 @@
   if ('ResizeObserver' in window) new ResizeObserver(onResize).observe(canvas);
   else window.addEventListener('resize', onResize);
 
+  /* Moving the window to a screen with a different pixel density changes
+     devicePixelRatio without resizing anything, so watch for it directly. */
+  function watchDensity() {
+    var query = window.matchMedia('(resolution: ' + (window.devicePixelRatio || 1) + 'dppx)');
+    if (!query.addEventListener) return;
+    query.addEventListener('change', function () {
+      onResize();
+      watchDensity();
+    }, { once: true });
+  }
+  watchDensity();
+
   /* Colours follow the theme toggle and the system setting. */
   function repaint() {
     readColours();
-    if (!raf) {
-      if (reduce.matches) drawStill();
-      else draw(true);
-    }
+    if (!raf) redrawStopped();
   }
   if ('MutationObserver' in window) {
     new MutationObserver(repaint).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
@@ -800,10 +849,7 @@
     setDepth: function (value) {
       depth = clamp(+value || 0, 0, 1);
       if (calm()) pointer.active = false;
-      if (!raf && count) {
-        if (reduce.matches) drawStill();
-        else draw(true);
-      }
+      if (!raf && count) redrawStopped();
     }
   };
 

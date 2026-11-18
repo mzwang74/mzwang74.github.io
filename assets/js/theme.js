@@ -19,16 +19,17 @@
   function paint(button) {
     var dark = current() === 'dark';
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', dark ? '#000000' : '#ffffff');
+    if (meta) meta.setAttribute('content', dark ? '#000000' : '#f6f3ec');
     if (button) button.textContent = dark ? 'Light mode' : 'Dark mode';
   }
 
   /* Marks the page as scripted so the stylesheet can hold elements back for
-     motion.js to bring in. If GSAP never arrives (blocked, offline, or a page
-     that doesn't load it), the mark comes off again and everything shows. */
+     motion.js to bring in. If motion.js never finishes setting up (GSAP
+     blocked or offline, motion.js failing, or a page that doesn't load it),
+     the mark comes off again and everything shows. */
   root.classList.add('js');
   function releaseIfNoMotion() {
-    if (!window.gsap) root.classList.remove('js');
+    if (!window.__motion) root.classList.remove('js');
   }
   window.addEventListener('load', releaseIfNoMotion);
   setTimeout(releaseIfNoMotion, 3000);

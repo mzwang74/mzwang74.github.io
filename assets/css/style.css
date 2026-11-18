@@ -1,21 +1,29 @@
 /* mattzwang.com
-   Black and white, one accent (NYU violet). Tokens first, then layout.
+   Warm off-white (light) or black (dark), one accent (NYU violet). Tokens first, then layout.
    The water (assets/js/water.js) reads --water-dot and --accent from here. */
+
+/* Syne draws "~" as a small raised dot, which turns "~95%" into "·95%".
+   This face covers only that one character with the system sans. */
+@font-face {
+  font-family: "Tilde";
+  src: local("Helvetica Neue"), local("Helvetica"), local("Arial");
+  unicode-range: U+007E;
+}
 
 :root {
   color-scheme: light;
-  --bg: #ffffff;
-  --ink: #000000;
-  --muted: #5c5c5c;
-  --line: #e4e4e4;
-  --dot-line: #b3b3b3;
+  --bg: #f6f3ec;
+  --ink: #1c1a17;
+  --muted: #5e5a52;
+  --line: #e3ddd1;
+  --dot-line: #b8b1a3;
   --accent: #57068c;
-  --accent-tint: #f1e6f8;
-  --on-ink: #ffffff;
-  --water-dot: #bcbcbc;
-  --fish-white: #d6d6d6;
+  --accent-tint: #eee2f0;
+  --on-ink: #f6f3ec;
+  --water-dot: #c3bcae;
+  --fish-white: #bdb4a3;
 
-  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --display: "Tilde", "Syne", "Helvetica Neue", Arial, sans-serif;
   --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
 
   --measure: 42rem;
@@ -88,9 +96,10 @@ h1,
 h2,
 h3 {
   font-family: var(--display);
-  font-weight: 600;
+  font-variant-numeric: lining-nums;
+  font-weight: 500;
   line-height: 1.05;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
@@ -166,8 +175,8 @@ mark[data-todo] {
 
 .section-title {
   font-size: clamp(2rem, 7vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-weight: 500;
+  letter-spacing: -0.015em;
 }
 
 .prose {
@@ -203,9 +212,10 @@ mark[data-todo] {
 
 .topbar .home-link {
   font-family: var(--display);
-  font-weight: 600;
+  font-variant-numeric: lining-nums;
+  font-weight: 500;
   font-size: 1.0625rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .topbar ul {
@@ -353,17 +363,18 @@ mark[data-todo] {
 .intro h1 {
   margin-top: 0.5rem;
   font-size: clamp(1.5rem, 5vw, 1.875rem);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
 }
 
 .intro .lede {
   margin-top: 1.5rem;
   max-width: 21em;
   font-family: var(--display);
-  font-weight: 600;
+  font-variant-numeric: lining-nums;
+  font-weight: 500;
   font-size: clamp(1.75rem, 5.6vw, 2.875rem);
   line-height: 1.06;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
@@ -490,9 +501,9 @@ mark[data-todo] {
   width: fit-content;
   color: var(--muted);
   font-family: var(--display);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1rem;
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: lining-nums tabular-nums;
   transition: color 0.2s ease;
 }
 
@@ -504,10 +515,11 @@ mark[data-todo] {
   display: block;
   width: fit-content;
   font-family: var(--display);
-  font-weight: 600;
+  font-variant-numeric: lining-nums;
+  font-weight: 500;
   font-size: clamp(1.375rem, 5vw, 1.875rem);
   line-height: 1.1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
 }
 
 .row-desc {
@@ -557,7 +569,7 @@ mark[data-todo] {
 .work-heading {
   margin-top: clamp(3.5rem, 9vw, 5.5rem);
   padding-bottom: clamp(1rem, 3vw, 1.5rem);
-  font-size: clamp(2.25rem, 8vw, 3.75rem);
+  font-size: clamp(2.025rem, 7.2vw, 3.375rem);
   line-height: 1;
 }
 
@@ -612,9 +624,9 @@ mark[data-todo] {
   width: fit-content;
   margin-top: 0.75rem;
   font-size: clamp(2.5rem, 10vw, 4.5rem);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 0.98;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.015em;
 }
 
 .page-head .meta {
@@ -636,9 +648,9 @@ mark[data-todo] {
 .kicker-num {
   color: var(--accent);
   font-family: var(--display);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1rem;
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 /* Result numbers */
@@ -661,17 +673,17 @@ mark[data-todo] {
 
 .stat dd {
   font-family: var(--display);
-  font-weight: 700;
+  font-weight: 500;
   font-size: clamp(2.5rem, 9vw, 3.5rem);
   line-height: 1;
-  letter-spacing: -0.045em;
-  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+  font-variant-numeric: lining-nums tabular-nums;
   white-space: nowrap;
 }
 
 .stat dd .to {
   color: var(--muted);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .stat dt {
@@ -705,7 +717,7 @@ mark[data-todo] {
 .case-section h3 {
   margin-bottom: 0.5rem;
   font-size: 1.1875rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .case-section .prose + h3 {
@@ -831,7 +843,7 @@ mark[data-todo] {
 .theme-toggle {
   min-height: 2.75rem;
   padding: 0.4rem 1rem;
-  border-color: var(--line);
+  border-color: var(--dot-line);
   color: var(--ink);
   font-size: 0.875rem;
 }

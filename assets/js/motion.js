@@ -19,6 +19,10 @@
     return;
   }
 
+  /* theme.js already gave up waiting and showed everything. Animating now
+     would hide content the visitor can already see, then bring it back. */
+  if (!root.classList.contains('js')) return;
+
   gsap.registerPlugin(ScrollTrigger);
 
   function setDepth(value) {
@@ -132,4 +136,7 @@
       setDepth(0);
     };
   });
+
+  /* Tells theme.js that motion is in charge of revealing content. */
+  window.__motion = true;
 })();

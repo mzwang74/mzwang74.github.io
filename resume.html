@@ -19,8 +19,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text&family=Instrument+Sans:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/theme.js"></script>
+  <script type="module" src="assets/js/gradient.js"></script>
 </head>
 <body>
+  <div class="gradient" data-gradient aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <nav class="wrap topbar" aria-label="Site">
@@ -32,7 +34,7 @@
     </ul>
   </nav>
 
-  <main id="main" class="wrap">
+  <main id="main" tabindex="-1" class="wrap">
     <div class="narrow">
     <header class="page-head">
       <p class="eyebrow">Matthew Wang · New York, NY</p>
@@ -164,7 +166,7 @@
       </p>
       <p>Built with Claude Code. <a href="https://github.com/mzwang74/mzwang74.github.io">View the source on GitHub</a></p>
       <div class="foot-controls">
-        <button class="pill theme-toggle" type="button" data-water-toggle aria-pressed="false" hidden>Pause water</button>
+        <button class="pill theme-toggle" type="button" data-water-toggle hidden>Pause water</button>
         <button class="pill theme-toggle" type="button" data-theme-toggle hidden>Dark mode</button>
       </div>
     </div>

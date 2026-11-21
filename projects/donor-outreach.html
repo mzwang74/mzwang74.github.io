@@ -24,8 +24,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="../assets/js/water.js" defer></script>
   <script src="../assets/js/motion.js" defer></script>
+  <script type="module" src="../assets/js/gradient.js"></script>
 </head>
 <body>
+  <div class="gradient" data-gradient aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <div class="band"><canvas class="water" data-water aria-hidden="true"></canvas></div>
@@ -39,7 +41,7 @@
     </ul>
   </nav>
 
-  <main id="main" class="wrap">
+  <main id="main" tabindex="-1" class="wrap">
     <header class="page-head">
       <p class="kicker"><span class="kicker-num" style="view-transition-name: vt-donor-num">02</span> <span>Projects</span></p>
       <h1 style="view-transition-name: vt-donor-title">Donor outreach for a global NGO</h1>
@@ -90,7 +92,7 @@
             <span class="row-num" aria-hidden="true" style="view-transition-name: vt-director-num">03</span>
             <span class="row-main">
               <span class="row-title" style="view-transition-name: vt-director-title">Directing 4 pro bono engagements</span>
-              <span class="row-desc">4 concurrent client engagements, ~25 consultants and 5 project managers.</span>
+              <span class="row-desc">4 pro bono engagements, 5 project managers and 17 consultants.</span>
             </span>
             <span class="row-meta">Next</span>
           </a>
@@ -107,7 +109,7 @@
       </p>
       <p>Built with Claude Code. <a href="https://github.com/mzwang74/mzwang74.github.io">View the source on GitHub</a></p>
       <div class="foot-controls">
-        <button class="pill theme-toggle" type="button" data-water-toggle aria-pressed="false" hidden>Pause water</button>
+        <button class="pill theme-toggle" type="button" data-water-toggle hidden>Pause water</button>
         <button class="pill theme-toggle" type="button" data-theme-toggle hidden>Dark mode</button>
       </div>
     </div>

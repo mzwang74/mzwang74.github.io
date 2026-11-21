@@ -24,8 +24,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="assets/js/water.js" defer></script>
   <script src="assets/js/motion.js" defer></script>
+  <script type="module" src="assets/js/gradient.js"></script>
 </head>
 <body class="home">
+  <div class="gradient" data-gradient aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <canvas class="water" data-water aria-hidden="true"></canvas>
@@ -39,7 +41,7 @@
     </ul>
   </nav>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <section class="dive" aria-label="Introduction">
       <div class="stage">
         <div class="wrap intro">
@@ -138,10 +140,10 @@
             <span class="row-main">
               <span class="row-head">
                 <span class="row-title" style="view-transition-name: vt-director-title">Directing 4 pro bono engagements</span>
-                <span class="row-when">Sep 2026 – Present · New York, NY</span>
+                <span class="row-when">Fall 2026 · New York, NY</span>
               </span>
-              <span class="row-role">EmpowerED Consulting · VP, Director of Project Management</span>
-              <span class="row-desc">Oversee 4 concurrent client engagements with ~25 consultants and 5 project managers, coaching PMs through weekly 1:1s and mid-project client reviews.</span>
+              <span class="row-role">EmpowerED Consulting · VP, Director of Project Management &amp; Experiences</span>
+              <span class="row-desc">Ran 4 pro bono engagements with New York organizations, leading 5 project managers and 17 consultants. 2 of 4 clients are returning in Spring 2027.</span>
             </span>
           </a>
         </li>
@@ -154,7 +156,7 @@
                 <span class="row-when">2026</span>
               </span>
               <span class="row-role">Personal project</span>
-              <span class="row-desc">Designed and built with Claude Code: hand-written HTML, CSS and JavaScript with GSAP, and a water background that nods to swimming.</span>
+              <span class="row-desc">Designed and built with Claude Code: hand-written HTML, CSS and JavaScript with GSAP, and a water background over a react-three-fiber gradient that nods to swimming.</span>
             </span>
           </a>
         </li>
@@ -172,7 +174,7 @@
       </p>
       <p>Built with Claude Code. <a href="https://github.com/mzwang74/mzwang74.github.io">View the source on GitHub</a></p>
       <div class="foot-controls">
-        <button class="pill theme-toggle" type="button" data-water-toggle aria-pressed="false" hidden>Pause water</button>
+        <button class="pill theme-toggle" type="button" data-water-toggle hidden>Pause water</button>
         <button class="pill theme-toggle" type="button" data-theme-toggle hidden>Dark mode</button>
       </div>
     </div>

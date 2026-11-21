@@ -24,8 +24,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script src="../assets/js/water.js" defer></script>
   <script src="../assets/js/motion.js" defer></script>
+  <script type="module" src="../assets/js/gradient.js"></script>
 </head>
 <body>
+  <div class="gradient" data-gradient aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <div class="band"><canvas class="water" data-water aria-hidden="true"></canvas></div>
@@ -39,7 +41,7 @@
     </ul>
   </nav>
 
-  <main id="main" class="wrap">
+  <main id="main" tabindex="-1" class="wrap">
     <header class="page-head">
       <p class="kicker"><span class="kicker-num" style="view-transition-name: vt-site-num">04</span> <span>Projects</span></p>
       <h1 style="view-transition-name: vt-site-title">This website</h1>
@@ -50,7 +52,7 @@
     <section class="case-section" aria-labelledby="built" data-reveal>
       <h2 id="built">How it’s built</h2>
       <div class="prose">
-        <p>Every page is a plain HTML file with one shared stylesheet and a few small scripts. There’s no framework and no build step, and it’s hosted on GitHub Pages. I built it with Claude Code.</p>
+        <p>Every page is a plain HTML file with one shared stylesheet and a few small scripts. There’s no build step, and it’s hosted on GitHub Pages. The one library-heavy piece is the background gradient, which loads react-three-fiber from a CDN. I built it with Claude Code.</p>
         <p>GSAP and its ScrollTrigger plugin run the motion: the intro on the home page, the dive into Work as you scroll, the rows that rise into view and the numbers that count up.</p>
       </div>
     </section>
@@ -59,6 +61,7 @@
       <h2 id="water">The water</h2>
       <div class="prose">
         <p>The background is drawn on a canvas: a field of grey dots that flows like the surface of a pool, and a small school of violet fish. Move a cursor or a finger through it and the dots part while the fish swim away.</p>
+        <p>Under the dots is a smooth navy gradient with silver-blue highlights, written as a shader with <a href="https://github.com/pmndrs/react-three-fiber">react-three-fiber</a> and Three.js and inspired by <a href="https://github.com/ruucm/shadergradient">ShaderGradient</a>. It runs the same wave formula as the dots on the same clock, so the colour moves with them. It tilts a little as your cursor moves, and on the inner pages it only glows at the edges.</p>
         <p>It’s a nod to swimming: I swam for NYU from 2023 to 2025. There’s more on that in <a href="../about.html">About</a>.</p>
       </div>
     </section>
@@ -95,7 +98,7 @@
       </p>
       <p>Built with Claude Code. <a href="https://github.com/mzwang74/mzwang74.github.io">View the source on GitHub</a></p>
       <div class="foot-controls">
-        <button class="pill theme-toggle" type="button" data-water-toggle aria-pressed="false" hidden>Pause water</button>
+        <button class="pill theme-toggle" type="button" data-water-toggle hidden>Pause water</button>
         <button class="pill theme-toggle" type="button" data-theme-toggle hidden>Dark mode</button>
       </div>
     </div>

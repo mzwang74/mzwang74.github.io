@@ -632,10 +632,11 @@
     else draw(true);
   }
 
-  /* Reduced motion: one still frame of dots, no fish. */
+  /* Reduced motion or paused: one still frame of dots, no fish. Uses the
+     current time so the dots stay lined up with the paused gradient. */
   function drawStill() {
     for (var i = 0; i < count; i++) {
-      var height = surface(hx[i], hy[i], 0);
+      var height = surface(hx[i], hy[i], time);
       ox[i] = flow[0] * gap * 0.42;
       oy[i] = flow[1] * gap * 0.42;
       vx[i] = 0;
@@ -654,6 +655,8 @@
 
     var pace = 1 - depth * 0.65;
     time += dt * pace;
+    /* Shared clock: gradient.js reads this so its colours ride the same waves. */
+    window.__waterTime = time;
     for (var r = ripples.length - 1; r >= 0; r--) {
       ripples[r].age += dt;
       if (ripples[r].age > 1.4) ripples.splice(r, 1);
@@ -672,6 +675,10 @@
   function sync() {
     if (shouldRun()) {
       if (!raf) {
+        /* The gradient kept flowing while the dots were stopped (scrolled
+           away or covered). Catch up to it; the dots weren't visible, so the
+           jump isn't either. */
+        if (window.__gradientTime > time) time = window.__gradientTime;
         last = performance.now();
         raf = requestAnimationFrame(frame);
       }
@@ -823,7 +830,9 @@
     if (!toggle) return;
     toggle.hidden = reduce.matches;
     toggle.textContent = userPaused ? 'Play water' : 'Pause water';
-    toggle.setAttribute('aria-pressed', userPaused ? 'true' : 'false');
+    /* The label already says what a press will do, so no aria-pressed
+       (it would read as "Play water, pressed"). gradient.js reads data-paused. */
+    toggle.setAttribute('data-paused', userPaused ? 'true' : 'false');
   }
   try {
     userPaused = localStorage.getItem('water') === 'paused';

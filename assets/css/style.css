@@ -14,6 +14,9 @@
   --on-ink: #f6f3ec;
   --water-dot: #c3bcae;
   --fish-white: #bdb4a3;
+  --grad-1: #b7c4d8;
+  --grad-2: #d6deea;
+  --grad-3: #f3f5f8;
 
   --display: "Libre Caslon Text", Georgia, "Times New Roman", serif;
   --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
@@ -29,7 +32,7 @@
   color-scheme: dark;
   --bg: #000000;
   --ink: #ffffff;
-  --muted: #a6a6a6;
+  --muted: #bdbdbd;
   --line: #2a2a2a;
   --dot-line: #4d4d4d;
   --accent: #c9a0ff;
@@ -37,6 +40,9 @@
   --on-ink: #000000;
   --water-dot: #474747;
   --fish-white: #f2f2f2;
+  --grad-1: #8fa3c0;
+  --grad-2: #1c2a44;
+  --grad-3: #05080f;
 }
 
 /* Base */
@@ -114,9 +120,10 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--ink);
   outline-offset: 3px;
   border-radius: 4px;
+  box-shadow: 0 0 0 5px var(--bg);
 }
 
 ::selection {
@@ -191,14 +198,15 @@ mark[data-todo] {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding-top: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  padding-top: calc(1.5rem + env(safe-area-inset-top, 0px));
   font-size: 0.9375rem;
 }
 
 .topbar a {
   display: inline-block;
-  padding-block: 0.5rem;
+  padding-block: 0.7rem;
   text-decoration: none;
 }
 
@@ -212,14 +220,25 @@ mark[data-todo] {
 
 .topbar ul {
   display: flex;
-  gap: 1.25rem;
+  gap: 0.75rem 1.25rem;
 }
 
+/* Current page: not colour alone (it read as disabled over the gradient). */
 .topbar [aria-current="page"] {
-  color: var(--muted);
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
 }
 
 /* Shared bits */
+
+/* Small hero text sits directly on the gradient, so it uses full-strength ink. */
+.dive .eyebrow,
+.dive .dive-cue {
+  color: var(--ink);
+}
 
 .eyebrow {
   color: var(--muted);
@@ -279,6 +298,29 @@ mark[data-todo] {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--bg);
+}
+
+/* Gradient layer (assets/js/gradient.js): fixed under the water on every page.
+   Until WebGL takes over (or if it never does) this static gradient shows. */
+.gradient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(160deg, var(--grad-2), var(--grad-3) 75%);
+  background:
+    radial-gradient(ellipse at 20% 15%, color-mix(in srgb, var(--grad-1) 55%, transparent), transparent 60%),
+    linear-gradient(160deg, var(--grad-2), var(--grad-3) 75%);
+}
+
+.gradient.is-live {
+  background: none;
+}
+
+/* Inner pages: only the edges glow; the centre fades to the page so text stays clean. */
+body:not(.home) .gradient {
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at center, transparent 45%, #000 100%);
+  mask-image: radial-gradient(ellipse 70% 65% at center, transparent 45%, #000 100%);
 }
 
 /* Water layers. The canvas never takes pointer events: water.js listens on window. */
@@ -430,9 +472,9 @@ mark[data-todo] {
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .panel,
   .panel-foot {
-    background: color-mix(in srgb, var(--bg) 47%, transparent);
-    -webkit-backdrop-filter: blur(7px);
-    backdrop-filter: blur(7px);
+    background: color-mix(in srgb, var(--bg) 40%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
   }
 }
 
@@ -942,4 +984,10 @@ mark[data-todo] {
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* Skip-link target: focusable for older Safari, but no ring around the whole page. */
+#main:focus {
+  outline: none;
+  box-shadow: none;
 }

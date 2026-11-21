@@ -1,4 +1,4 @@
-# mattzwang.com
+# Matthew Wang — personal site
 
 Personal site for Matthew Wang. Plain HTML, CSS and JavaScript. No framework, no build step. GSAP (loaded from cdnjs) runs the motion.
 
@@ -47,4 +47,4 @@ Replace the whole `<mark data-todo>[TODO: ...]</mark>` element with the real tex
 
 ## Hosting
 
-GitHub Pages, served from the root of the `main` branch. The site lives at <https://mattzwang.com>.
+GitHub Pages, served from the root of the `main` branch. The site lives at <https://mzwang74.github.io>.

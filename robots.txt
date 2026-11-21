@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mattzwang.com/sitemap.xml
+Sitemap: https://mzwang74.github.io/sitemap.xml

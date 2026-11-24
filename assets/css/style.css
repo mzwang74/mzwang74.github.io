@@ -991,3 +991,62 @@ body:not(.home) .gradient {
   outline: none;
   box-shadow: none;
 }
+
+/* About: photo strip. Base is a swipe strip (phones, reduced motion, no JS).
+   On desktop with motion, motion.js pins it and slides the track sideways. */
+.photo-strip {
+  margin-top: 3rem;
+  margin-inline: calc(var(--gutter) * -1);
+}
+.photo-track {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0 var(--gutter) 1rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  -webkit-overflow-scrolling: touch;
+}
+.photo-track > li {
+  flex: 0 0 78%;
+  max-width: 22rem;
+  scroll-snap-align: start;
+}
+.photo-slot {
+  margin: 0;
+}
+.photo-slot img,
+.photo-ph {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+.photo-ph {
+  background: color-mix(in srgb, var(--muted) 22%, transparent);
+  border: 1px solid var(--line);
+}
+.photo-slot figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+/* Desktop pinned mode: set by motion.js. */
+.photo-strip.is-pinned {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.photo-strip.is-pinned .photo-track {
+  overflow: visible;
+  scroll-snap-type: none;
+  padding-bottom: 0;
+}
+.photo-strip.is-pinned .photo-track > li {
+  flex-basis: 22rem;
+}

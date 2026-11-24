@@ -137,6 +137,39 @@
     };
   });
 
+  /* About: the photo strip slides sideways while pinned. Desktop with motion
+     only; phones and reduced motion keep the plain swipe strip from the CSS. */
+  var strip = document.querySelector('.photo-strip');
+  var track = strip && strip.querySelector('.photo-track');
+  if (track) {
+    mm.add('(prefers-reduced-motion: no-preference) and (min-width: 46rem)', function () {
+      strip.classList.add('is-pinned');
+      function distance() {
+        return Math.max(0, track.scrollWidth - strip.clientWidth);
+      }
+      gsap.to(track, {
+        x: function () { return -distance(); },
+        ease: 'none',
+        scrollTrigger: {
+          trigger: strip,
+          start: 'top top',
+          end: function () { return '+=' + distance(); },
+          pin: true,
+          scrub: 0.6,
+          invalidateOnRefresh: true
+        }
+      });
+      return function () {
+        strip.classList.remove('is-pinned');
+      };
+    });
+    gsap.utils.toArray('img', track).forEach(function (img) {
+      if (!img.complete) {
+        img.addEventListener('load', function () { ScrollTrigger.refresh(); }, { once: true });
+      }
+    });
+  }
+
   /* Tells theme.js that motion is in charge of revealing content. */
   window.__motion = true;
 })();
